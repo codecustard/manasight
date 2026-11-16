@@ -1,0 +1,14 @@
+# What the notebooks need. Tested with Python 3.12.
+# torch 2.2.2 / torchvision 0.17.2 / numpy<2 are the newest versions that install on an Intel Mac.
+numpy<2
+pandas
+pillow
+requests
+tqdm
+matplotlib
+scikit-learn
+jupyter
+ipykernel
+torch==2.2.2
+torchvision==0.17.2
+open_clip_torch

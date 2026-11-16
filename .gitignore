@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.venv
+.ipynb_checkpoints/
+.DS_Store
+*.log
+.gradio/
+# data/: only the table is committed. The Scryfall file and the images are downloaded by notebooks/01_data.ipynb
+data/*
+!data/cards.csv
+# models/: trained weights are added one by one when they are final
+models/*
+!models/.gitkeep
