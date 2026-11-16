@@ -45,12 +45,20 @@ Test set (10 held-out sets), color, 7 classes:
 | Chance | 14.3% | |
 | Always "Multicolor" | 20.2% | 0.048 |
 | Color histogram + logistic regression ([03](notebooks/03_histogram.ipynb)) | 34.0% | 0.304 |
+| CLIP zero-shot, hand-written content prompts ([04](notebooks/04_clip_zero_shot.ipynb)) | 27.9% | 0.280 |
+| CLIP zero-shot, palette prompts | 32.4% | 0.307 |
+| CLIP zero-shot, words discovered from the training art | 36.2% | 0.335 |
 
 The palette alone gets a third of the cards right. It finds Green, Red and Blue about half the time, almost never
 finds Colorless, and drops to 22% on the oldest sets.
 
 Type, 7 classes: always "Creature" scores 49.9% accuracy and 0.095 macro-F1. The color histogram does no better
 (49.8%, 0.095): the palette says nothing about type.
+CLIP zero-shot reaches 0.284 macro-F1 on type with no training: content is visible where the palette is blind.
+
+Without any guidance, CLIP describes the colors by itself: Black as "ghoul, zombie, undead", Red as "lava, inferno,
+fireball", Colorless as "machinery, spaceship". Those discovered words beat our hand-written prompts and the palette.
+CLIP finds Black, Red and Colorless far better than the histogram; the histogram still wins on Blue and Green.
 
 ## Plan
 
@@ -61,7 +69,7 @@ Each notebook tests one hypothesis, and its result sets up the next.
 | 01 | [data](notebooks/01_data.ipynb) | Build the dataset and the splits |
 | 02 | [EDA](notebooks/02_eda.ipynb) | What do the pictures look like? Chance and majority baselines |
 | 03 | [Color histogram](notebooks/03_histogram.ipynb) | How far does the palette alone get? |
-| 04 | CLIP zero-shot | Does CLIP know the game's themes without training? |
+| 04 | [CLIP zero-shot](notebooks/04_clip_zero_shot.ipynb) | Does CLIP know the game's themes without training? |
 | 05 | CLIP probe, ResNet18 | Does a pretrained model beat the histogram by a lot? |
 | 06 | Grayscale and shuffled tiles | Content or palette? |
 | 07 | Artist and era | Is part of it artist style? Did the look of colors change over time? |
