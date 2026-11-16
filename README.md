@@ -69,6 +69,12 @@ With labels, a linear probe on the same frozen CLIP features beats the palette i
 A hidden layer on top of the same features gains nothing for color, and neither does fine-tuning all of CLIP:
 one layer, two layers and 88 million trained weights end within one point of each other, near 45%.
 
+Why 45%? A good part of the errors are cards whose label is not in the picture ([06](notebooks/06_errors_and_multi_label.ipynb)).
+For 60% of the multicolor cards the model names one of the card's own colors and is counted wrong; counting those
+as right gives 57%. Asked as five yes/no questions ("does this card have Red?"), the top-scoring color is one of the
+card's colors for 65% of colored cards, and for two-color cards the two top scores are exactly the card's pair 44% of
+the time (chance: 10%). The model's confidence is trustworthy: when it is over 70% sure, it is right 72% of the time.
+
 ## Plan
 
 Each notebook tests one hypothesis, and its result sets up the next.
@@ -80,9 +86,9 @@ Each notebook tests one hypothesis, and its result sets up the next.
 | 03 | [Color histogram](notebooks/03_histogram.ipynb) | How far does the palette alone get? |
 | 04 | [CLIP zero-shot](notebooks/04_clip_zero_shot.ipynb) | Does CLIP know the game's themes without training? |
 | 05 | [CLIP linear probe](notebooks/05_clip_probe.ipynb), then a small network and fine-tuning | Does a trained content model beat the histogram by a lot? |
-| 06 | Grayscale and shuffled tiles | Content or palette? |
-| 07 | Artist and era | Is part of it artist style? Did the look of colors change over time? |
-| 08 | Multi-label color | Does multicolor art blend its colors' cues? |
+| 06 | [Errors and multi-label color](notebooks/06_errors_and_multi_label.ipynb) | Where do the errors come from? Does multicolor art blend its colors' cues? |
+| 07 | Grayscale and shuffled pixels | Content or palette? |
+| 08 | Artist and era | Is part of it artist style? Did the look of colors change over time? |
 | 09 | Type | Which types are visible in art? Human baseline |
 | 10 | Grad-CAM and errors | What does the model look at? |
 
