@@ -49,6 +49,7 @@ Test set (10 held-out sets), color, 7 classes:
 | CLIP zero-shot, palette prompts | 32.4% | 0.307 |
 | CLIP zero-shot, words discovered from the training art | 36.2% | 0.335 |
 | **CLIP linear probe** (frozen CLIP, trained last layer; [05](notebooks/05_clip_probe.ipynb)) | **44.6%** | **0.442** |
+| CLIP small network (frozen CLIP, hidden layer on top; [05b](notebooks/05b_small_network.ipynb)) | 44.8% | 0.439 |
 
 The palette alone gets a third of the cards right. It finds Green, Red and Blue about half the time, almost never
 finds Colorless, and drops to 22% on the oldest sets.
@@ -64,6 +65,8 @@ CLIP finds Black, Red and Colorless far better than the histogram; the histogram
 With labels, a linear probe on the same frozen CLIP features beats the palette in every class and every era
 (Colorless: 0% to 45% found) and reaches 59.6% on the five single colors. For type it scores 57.8% accuracy and
 0.396 macro-F1. Adding the color histogram to CLIP's features gains nothing: CLIP already sees the palette.
+A hidden layer on top of the same features gains nothing for color either: the frozen features are used up, and going further
+means training CLIP itself.
 
 ## Plan
 
