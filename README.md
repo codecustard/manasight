@@ -44,8 +44,13 @@ Test set (10 held-out sets), color, 7 classes:
 |---|---|---|
 | Chance | 14.3% | |
 | Always "Multicolor" | 20.2% | 0.048 |
+| Color histogram + logistic regression ([03](notebooks/03_histogram.ipynb)) | 34.0% | 0.304 |
 
-Type, 7 classes: always "Creature" scores 49.9% accuracy and 0.095 macro-F1.
+The palette alone gets a third of the cards right. It finds Green, Red and Blue about half the time, almost never
+finds Colorless, and drops to 22% on the oldest sets.
+
+Type, 7 classes: always "Creature" scores 49.9% accuracy and 0.095 macro-F1. The color histogram does no better
+(49.8%, 0.095): the palette says nothing about type.
 
 ## Plan
 
@@ -55,7 +60,7 @@ Each notebook tests one hypothesis, and its result sets up the next.
 |---|---|---|
 | 01 | [data](notebooks/01_data.ipynb) | Build the dataset and the splits |
 | 02 | [EDA](notebooks/02_eda.ipynb) | What do the pictures look like? Chance and majority baselines |
-| 03 | Color histogram | How far does the palette alone get? |
+| 03 | [Color histogram](notebooks/03_histogram.ipynb) | How far does the palette alone get? |
 | 04 | CLIP zero-shot | Does CLIP know the game's themes without training? |
 | 05 | CLIP probe, ResNet18 | Does a pretrained model beat the histogram by a lot? |
 | 06 | Grayscale and shuffled tiles | Content or palette? |
