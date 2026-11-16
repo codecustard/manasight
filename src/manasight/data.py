@@ -46,6 +46,13 @@ HELD_OUT_SETS = {
     "fra": "2024+", "dft": "2024+",    # Reality Fracture, Aetherdrift
 }
 
+# Sets left out of every split (found in notebooks/02_eda.ipynb): the pictures are not normal card paintings
+JUNK_SETS = {
+    "slz": "collages of card frames and text",
+    "dbl": "black-and-white copies of paintings that are already in the data",
+    "mb2": "test-print sketches and crops that include the card frame",
+}
+
 # Things that are not real playable cards
 SKIP_LAYOUTS = {"token", "double_faced_token", "emblem", "art_series", "planar", "scheme", "vanguard"}
 SKIP_SET_TYPES = {"token", "memorabilia", "funny", "minigame"}
@@ -270,9 +277,15 @@ def download_art(df, limit=None, workers=8):
 
 
 def load_cards():
-    """Read data/cards.csv (made in notebooks/01_data.ipynb) and add the path of every picture."""
+    """Read data/cards.csv (made in notebooks/01_data.ipynb) and add the path of every picture.
+
+    Pictures from JUNK_SETS get is_junk = True and are marked "removed" in every split.
+    """
     df = pd.read_csv(CARDS_CSV, dtype=str, keep_default_na=False)
     df["is_land"] = df["is_land"] == "True"
     df["is_basic"] = df["is_basic"] == "True"
+    df["is_junk"] = df["set"].isin(list(JUNK_SETS))
+    for column in ("split", "split_random", "split_artist"):
+        df.loc[df["is_junk"], column] = "removed"
     df["path"] = [str(art_path(i)) for i in df["illustration_id"]]
     return df

@@ -29,8 +29,23 @@ Card data and art from [Scryfall](https://scryfall.com/docs/api/bulk-data), buil
   Other paintings of the test cards, and basic lands, are removed. Train 36,222 / val 4,935 / test 3,392.
 - Extra splits for later questions: random by card, and by artist
 
+- Three sets are left out of every split because their pictures are not normal card paintings (black-and-white
+  copies, test-print sketches, collages): 1,075 illustrations, found in [02_eda](notebooks/02_eda.ipynb).
+  That leaves train 35,383 / val 4,798 / test 3,392. The test set is not affected.
+
 `data/cards.csv` (one row per illustration: labels, splits, artist, image address) is in the repo.
 The images (about 1 GB) are downloaded by the notebook.
+
+## Results so far
+
+Test set (10 held-out sets), color, 7 classes:
+
+| Model | Accuracy | Macro-F1 |
+|---|---|---|
+| Chance | 14.3% | |
+| Always "Multicolor" | 20.2% | 0.048 |
+
+Type, 7 classes: always "Creature" scores 49.9% accuracy and 0.095 macro-F1.
 
 ## Plan
 
@@ -39,7 +54,7 @@ Each notebook tests one hypothesis, and its result sets up the next.
 | # | Notebook | Question |
 |---|---|---|
 | 01 | [data](notebooks/01_data.ipynb) | Build the dataset and the splits |
-| 02 | EDA | What do the pictures look like? Chance and majority baselines |
+| 02 | [EDA](notebooks/02_eda.ipynb) | What do the pictures look like? Chance and majority baselines |
 | 03 | Color histogram | How far does the palette alone get? |
 | 04 | CLIP zero-shot | Does CLIP know the game's themes without training? |
 | 05 | CLIP probe, ResNet18 | Does a pretrained model beat the histogram by a lot? |
