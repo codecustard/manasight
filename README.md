@@ -48,6 +48,7 @@ Test set (10 held-out sets), color, 7 classes:
 | CLIP zero-shot, hand-written content prompts ([04](notebooks/04_clip_zero_shot.ipynb)) | 27.9% | 0.280 |
 | CLIP zero-shot, palette prompts | 32.4% | 0.307 |
 | CLIP zero-shot, words discovered from the training art | 36.2% | 0.335 |
+| **CLIP linear probe** (frozen CLIP, trained last layer; [05](notebooks/05_clip_probe.ipynb)) | **44.6%** | **0.442** |
 
 The palette alone gets a third of the cards right. It finds Green, Red and Blue about half the time, almost never
 finds Colorless, and drops to 22% on the oldest sets.
@@ -60,6 +61,10 @@ Without any guidance, CLIP describes the colors by itself: Black as "ghoul, zomb
 fireball", Colorless as "machinery, spaceship". Those discovered words beat our hand-written prompts and the palette.
 CLIP finds Black, Red and Colorless far better than the histogram; the histogram still wins on Blue and Green.
 
+With labels, a linear probe on the same frozen CLIP features beats the palette in every class and every era
+(Colorless: 0% to 45% found) and reaches 59.6% on the five single colors. For type it scores 57.8% accuracy and
+0.396 macro-F1. Adding the color histogram to CLIP's features gains nothing: CLIP already sees the palette.
+
 ## Plan
 
 Each notebook tests one hypothesis, and its result sets up the next.
@@ -70,7 +75,7 @@ Each notebook tests one hypothesis, and its result sets up the next.
 | 02 | [EDA](notebooks/02_eda.ipynb) | What do the pictures look like? Chance and majority baselines |
 | 03 | [Color histogram](notebooks/03_histogram.ipynb) | How far does the palette alone get? |
 | 04 | [CLIP zero-shot](notebooks/04_clip_zero_shot.ipynb) | Does CLIP know the game's themes without training? |
-| 05 | CLIP, trained | Does a trained content model beat the histogram by a lot? |
+| 05 | [CLIP linear probe](notebooks/05_clip_probe.ipynb), then a small network and fine-tuning | Does a trained content model beat the histogram by a lot? |
 | 06 | Grayscale and shuffled tiles | Content or palette? |
 | 07 | Artist and era | Is part of it artist style? Did the look of colors change over time? |
 | 08 | Multi-label color | Does multicolor art blend its colors' cues? |

@@ -108,6 +108,24 @@ def word_features(model, tokenizer):
     return words, features
 
 
+def load_image_features(cards):
+    """The saved CLIP features of every picture in `cards` (made in notebooks/04_clip_zero_shot.ipynb).
+
+    Only reads the file in data/, so CLIP itself is not needed.
+    """
+    ids = cards["illustration_id"].to_numpy().astype(str)
+    saved = np.load(IMAGE_FEATURES_FILE)
+    if len(saved["ids"]) != len(ids) or not (saved["ids"] == ids).all():
+        raise ValueError("The saved CLIP features do not match these cards. Run notebook 04 first.")
+    return saved["features"]
+
+
+def load_word_features():
+    """The saved neutral word list and its CLIP features (made in notebooks/04_clip_zero_shot.ipynb)."""
+    saved = np.load(WORD_FEATURES_FILE)
+    return list(saved["words"]), saved["features"]
+
+
 def average_feature(features):
     """Average several features into one, and give it length 1 again."""
     average = features.mean(axis=0)
