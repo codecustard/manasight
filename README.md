@@ -45,6 +45,7 @@ Test set (10 held-out sets), color, 7 classes:
 | Chance | 14.3% | |
 | Always "Multicolor" | 20.2% | 0.048 |
 | Color histogram + logistic regression ([03](notebooks/03_histogram.ipynb)) | 34.0% | 0.304 |
+| Content only: CLIP probe trained and tested on grey pictures ([07](notebooks/07_palette_or_content.ipynb)) | 34.8% | 0.352 |
 | CLIP zero-shot, hand-written content prompts ([04](notebooks/04_clip_zero_shot.ipynb)) | 27.9% | 0.280 |
 | CLIP zero-shot, palette prompts | 32.4% | 0.307 |
 | CLIP zero-shot, words discovered from the training art | 36.2% | 0.335 |
@@ -75,6 +76,14 @@ as right gives 57%. Asked as five yes/no questions ("does this card have Red?"),
 card's colors for 65% of colored cards, and for two-color cards the two top scores are exactly the card's pair 44% of
 the time (chance: 10%). The model's confidence is trustworthy: when it is over 70% sure, it is right 72% of the time.
 
+### Palette or content?
+
+Both, in equal parts ([07](notebooks/07_palette_or_content.ipynb)). A model that never sees a color (34.8%) does as
+well as a model that sees nothing but colors (34.0%); a model with both reaches 44.6%, close to the sum of the two
+gains, so the two cues mostly help on different cards. It depends on the color: Colorless is read from content only,
+White and Black barely need their color, and Blue, Red and Green lose 20 to 26 points without it.
+Type is all content: removing the color costs nothing, shuffling the picture destroys it.
+
 ## Plan
 
 Each notebook tests one hypothesis, and its result sets up the next.
@@ -87,7 +96,7 @@ Each notebook tests one hypothesis, and its result sets up the next.
 | 04 | [CLIP zero-shot](notebooks/04_clip_zero_shot.ipynb) | Does CLIP know the game's themes without training? |
 | 05 | [CLIP linear probe](notebooks/05_clip_probe.ipynb), then a small network and fine-tuning | Does a trained content model beat the histogram by a lot? |
 | 06 | [Errors and multi-label color](notebooks/06_errors_and_multi_label.ipynb) | Where do the errors come from? Does multicolor art blend its colors' cues? |
-| 07 | Grayscale and shuffled pixels | Content or palette? |
+| 07 | [Grayscale and shuffled tiles](notebooks/07_palette_or_content.ipynb) | Content or palette? |
 | 08 | Artist and era | Is part of it artist style? Did the look of colors change over time? |
 | 09 | Type | Which types are visible in art? Human baseline |
 | 10 | Grad-CAM and errors | What does the model look at? |

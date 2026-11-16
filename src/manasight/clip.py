@@ -3,6 +3,7 @@
 A picture and a sentence that describe the same thing get similar numbers ("features", 512 per item).
 All features here have length 1, so the dot product of two of them is their similarity (higher = closer).
 """
+import shutil
 from pathlib import Path
 
 import numpy as np
@@ -32,26 +33,35 @@ def load_clip():
     return model, transform, tokenizer
 
 
-def image_features(cards, model, transform, chunk=1000, batch=50):
+def image_features(cards, model, transform, chunk=1000, batch=50, alter=None, name=None):
     """CLIP features of every picture in `cards`: array (number of pictures, 512), same order as `cards`.
 
     Slow the first time (about 20 pictures per second on a CPU). The work is saved in chunks of 1,000 pictures,
     so it is safe to stop and run again. The finished result is saved in data/ and reused next time.
+
+    alter: optional function (picture, number of the picture) -> changed picture, applied before CLIP sees it
+           (see manasight/alter.py). Then `name` is needed too: it names the saved file, for example "gray".
     """
     import torch
     from tqdm.auto import tqdm
 
+    features_file = IMAGE_FEATURES_FILE
+    parts_dir = PARTS_DIR
+    if alter is not None:
+        features_file = DATA_DIR / f"clip_image_features_{name}.npz"
+        parts_dir = DATA_DIR / f"clip_parts_{name}"
+
     ids = cards["illustration_id"].to_numpy().astype(str)
-    if IMAGE_FEATURES_FILE.exists():
-        saved = np.load(IMAGE_FEATURES_FILE)
+    if features_file.exists():
+        saved = np.load(features_file)
         if len(saved["ids"]) == len(ids) and (saved["ids"] == ids).all():
             return saved["features"]
 
-    PARTS_DIR.mkdir(parents=True, exist_ok=True)
+    parts_dir.mkdir(parents=True, exist_ok=True)
     paths = cards["path"].to_numpy()
     parts = []
     for start in tqdm(range(0, len(cards), chunk)):
-        part_file = PARTS_DIR / f"part_{start:06d}_{ids[start][:8]}.npy"
+        part_file = parts_dir / f"part_{start:06d}_{ids[start][:8]}.npy"
         if part_file.exists():
             parts.append(np.load(part_file))
             continue
@@ -59,9 +69,12 @@ def image_features(cards, model, transform, chunk=1000, batch=50):
         chunk_paths = paths[start:start + chunk]
         for first in range(0, len(chunk_paths), batch):
             images = []
-            for path in chunk_paths[first:first + batch]:
+            for offset, path in enumerate(chunk_paths[first:first + batch]):
                 with Image.open(path) as image:
-                    images.append(transform(image.convert("RGB")))   # resize, center crop to 224x224, normalize
+                    image = image.convert("RGB")
+                    if alter is not None:
+                        image = alter(image, start + first + offset)
+                    images.append(transform(image))   # resize, center crop to 224x224, normalize
             with torch.no_grad():
                 features = model.encode_image(torch.stack(images))
             features = features / features.norm(dim=1, keepdim=True)  # length 1
@@ -71,7 +84,8 @@ def image_features(cards, model, transform, chunk=1000, batch=50):
         parts.append(part)
 
     features = np.concatenate(parts)
-    np.savez(IMAGE_FEATURES_FILE, ids=ids, features=features)
+    np.savez(features_file, ids=ids, features=features)
+    shutil.rmtree(parts_dir)   # the chunks are no longer needed once the full file is saved
     return features
 
 
