@@ -70,7 +70,7 @@ Each notebook tests one hypothesis, and its result sets up the next.
 | 02 | [EDA](notebooks/02_eda.ipynb) | What do the pictures look like? Chance and majority baselines |
 | 03 | [Color histogram](notebooks/03_histogram.ipynb) | How far does the palette alone get? |
 | 04 | [CLIP zero-shot](notebooks/04_clip_zero_shot.ipynb) | Does CLIP know the game's themes without training? |
-| 05 | CLIP probe, ResNet18 | Does a pretrained model beat the histogram by a lot? |
+| 05 | CLIP, trained | Does a trained content model beat the histogram by a lot? |
 | 06 | Grayscale and shuffled tiles | Content or palette? |
 | 07 | Artist and era | Is part of it artist style? Did the look of colors change over time? |
 | 08 | Multi-label color | Does multicolor art blend its colors' cues? |
