@@ -94,7 +94,9 @@ Each notebook tests one hypothesis, and its result sets up the next.
 | 02 | [EDA](notebooks/02_eda.ipynb) | What do the pictures look like? Chance and majority baselines |
 | 03 | [Color histogram](notebooks/03_histogram.ipynb) | How far does the palette alone get? |
 | 04 | [CLIP zero-shot](notebooks/04_clip_zero_shot.ipynb) | Does CLIP know the game's themes without training? |
-| 05 | [CLIP linear probe](notebooks/05_clip_probe.ipynb), then a small network and fine-tuning | Does a trained content model beat the histogram by a lot? |
+| 05 | [CLIP linear probe](notebooks/05_clip_probe.ipynb) | Does a trained content model beat the histogram by a lot? |
+| 05b | [Small network](notebooks/05b_small_network.ipynb) | Can a bigger classifier get more out of the same frozen features? |
+| 05c | [Fine-tuning CLIP](notebooks/05c_clip_finetune.ipynb) | Does training CLIP itself, on a GPU, get further? |
 | 06 | [Errors and multi-label color](notebooks/06_errors_and_multi_label.ipynb) | Where do the errors come from? Does multicolor art blend its colors' cues? |
 | 07 | [Grayscale and shuffled tiles](notebooks/07_palette_or_content.ipynb) | Content or palette? |
 | 08 | Artist and era | Is part of it artist style? Did the look of colors change over time? |
